@@ -1,0 +1,69 @@
+image: maven:3.9.9-eclipse-temurin-21-alpine
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository/
+
+stages:
+  - analyze
+  - grade
+  - build
+
+analyze:
+  stage: analyze # (compile, test with code and mutation coverage, and run static analysis)
+  artifacts:
+    paths:
+      - target # Make results available for the autograding action in the next stage
+  script:
+    - mvn -V -U --color always -ntp clean verify -Dmaven.test.failure.ignore=true
+
+grade:
+  image: uhafner/autograding-gitlab-action:2.1.0
+  stage: grade
+  variables:
+    DISPLAY_NAME: "Qualitätsbericht"
+    CONFIG: > # Override default configuration: just grade the test results
+      {
+      "tests": {
+              "tools": [
+                {
+                  "id": "test",
+                  "name": "JUnit",
+                  "pattern": "**/target/*-reports/TEST*.xml"
+                }
+              ], 
+              "name": "Korrektheit der Lösung",
+              "skippedImpact": -10,
+              "failureImpact": -10,
+              "maxScore": 50
+          },
+      "analysis": [          
+          {
+            "name": "Einhaltung der Konventionen",
+            "id": "bugs",
+            "icon": "crown",
+            "tools": [
+              {
+                "id": "checkstyle",
+                "name": "Checkstyle",
+                "pattern": "**/target/checkstyle-result.xml"
+              }              
+            ],
+            "errorImpact": -5,
+            "highImpact": -2,
+            "normalImpact": -1,
+            "lowImpact": -1,
+            "maxScore": 50
+          }
+        ]
+      }
+  script:
+    - java -cp @/app/jib-classpath-file edu.hm.hafner.grading.gitlab.GitLabAutoGradingRunner
+
+build:
+  stage: build
+  script:
+    - mvn -V --color always -ntp verify  -Dcheckstyle.violationSeverity=warning

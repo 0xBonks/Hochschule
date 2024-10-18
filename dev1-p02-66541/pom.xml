@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>edu.hm.cs.bka</groupId>
+  <artifactId>dev1-p02</artifactId>
+  <version>2024.0.0</version>
+
+  <packaging>jar</packaging>
+
+  <name>DEV1-Praktikum-02</name>
+  <description>Projektvorlage zu Aufgabenblatt 2</description>
+
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+  </repositories>
+
+
+  <properties>
+    <source.encoding>UTF-8</source.encoding>
+    <project.build.sourceEncoding>${source.encoding}</project.build.sourceEncoding>
+    <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+    <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
+    <karalight.version>0.8.0</karalight.version>
+    <java-testing.version>0.4.0-SNAPSHOT</java-testing.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>de.i8k</groupId>
+      <artifactId>karalight</artifactId>
+      <version>${karalight.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>de.i8k</groupId>
+      <artifactId>java-testing</artifactId>
+      <version>${java-testing.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <source>21</source>
+            <target>21</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/*OptionalTest.java</exclude>
+          </excludes>
+          <argLine>-XX:+EnableDynamicAgentLoading</argLine>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven-checkstyle-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>8.36</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>checkstyle</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <configLocation>https://syncandshare.lrz.de/dl/fi3vZF929pRCTKtb4Xur27/DEV1/DEV1-Checkstyle.xml</configLocation>
+          <encoding>UTF-8</encoding>
+          <consoleOutput>true</consoleOutput>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
