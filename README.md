@@ -1,5 +1,6 @@
-# Hochschule München Software Entwicklung Aufgaben
-Das ist eine Sammlung all meiner Aufgaben, die ich bis jetzt (Stand 18.10.2024) bekommen habe im Modul **Software Entwicklung I**. Weitere Aufgaben folgen noch.
+# Munich University of Applied Sciences Software Development Tasks
 
-### Was kommt noch?
-Und der Spaß wird ab dem zweiten Semester mit **Software Entwicklung II** ergänzt, wo wahrscheinlich noch ein eigenes Projekt folgt plus die Module **Software Engineering I/II**.
+This is a collection of all the tasks I have received so far (as of 18/10/2024) in the module **Software Development I**. More tasks will follow.
+
+### What's next?
+The fun continues in the second semester with **Software Development II**, likely including an individual project, along with the modules **Software Engineering I/II**.
